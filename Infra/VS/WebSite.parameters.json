@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "hostingPlanName": {
+      "value": "iacc-demos-plan"
+    },
+    "dbmsAdminLogin": {
+      "value": "sqladmin"
+    },
+    "dbmsAdminLoginPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b8c7d821-4fbb-4089-8978-b966512a6a45/resourceGroups/rg-shared/providers/Microsoft.KeyVault/vaults/imaKeyvault"
+        },
+        "secretName": "iacc23password"
+      }
+    }
+  }
+}
