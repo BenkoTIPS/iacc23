@@ -5,6 +5,10 @@ git fetch origin
 git branch -u origin/main main
 git remote set-head origin -a
 
+git remote add origin https://github.com/BenkoTIPS/iacc23.git
+git branch -M main
+git push -u origin main
+
 # create .net core web app using Razor Pages
 dotnet new webapp -o appNameWeb
 

@@ -1,0 +1,15 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+name: iacc23
+services:
+- name: iaccweb
+  project: code/iaccWeb/iaccWeb.csproj
+  env:
+  - name: EnvName
+    value: "Project Tye"
+- name: iaccapi
+  project: code/iaccApi/iaccApi.csproj

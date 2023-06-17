@@ -1,0 +1,90 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iaccweb
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+   app: iaccweb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iaccweb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+       app: iaccweb
+    spec:
+      containers:
+      - name: iaccweb
+      image: vsl22acr.azurecr.io/iaccweb:v0.2
+      ports:
+      - containerPort: 80
+      envFrom:
+        - configMapRef:
+          name: the-configmap
+      env:
+      - name: ASPNETCORE_URLS
+        value: http://*:80
+      resources:
+        limits: 
+        cpu: 500m
+        memory: 128Mi
+      imagePullSecrets:
+      - name: pullsecrets
+  selector:
+    matchLabels:
+      app: iaccweb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iaccapi
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+       app: iaccapi
+    spec:
+      containers:
+      - name: iaccapi
+      image: vsl22acr.azurecr.io/iaccapi:v0.2
+      ports:
+      - containerPort: 80
+      env:
+      - name: ASPNETCORE_URLS
+        value: http://*:80
+      resources:
+        limits: 
+        cpu: 500m
+        memory: 128Mi
+      imagePullSecrets:
+      - name: pullsecrets
+  selector:
+    matchLabels:
+      app: iaccapi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iaccapi
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+   app: iaccapi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: the-configmap
+data:
+  EnvName: my-ConfigMap
