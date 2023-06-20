@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  iaccWeb:
+    image: iaccweb:v0.1
+    ports:
+      - 5100:80
+    environment:
+      - EnvName=DockerCompose
+      - ApiUrl=http://iaccApi/weatherforecast
+    depends_on:
+      - iaccApi
+
+  iaccApi:
+    image: iaccapi:v0.1
+    ports:
+      - 5200:80

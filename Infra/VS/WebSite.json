@@ -2,6 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "color" : { "type": "string", "defaultValue":  "lightgreen"},
     "hostingPlanName": {
       "type": "string",
       "minLength": 1
@@ -11,16 +12,7 @@
       "defaultValue": "F1",
       "allowedValues": [
         "F1",
-        "D1",
-        "B1",
-        "B2",
-        "B3",
         "S1",
-        "S2",
-        "S3",
-        "P1",
-        "P2",
-        "P3",
         "P4"
       ],
       "metadata": {
@@ -34,10 +26,52 @@
       "metadata": {
         "description": "Describes plan's instance count"
       }
+    },
+    "dbmsAdminLogin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dbmsAdminLoginPassword": {
+      "type": "securestring"
+    },
+    "demodbName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "demodbCollation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "demodbEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "demodbRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
     }
   },
   "variables": {
-    "webSiteName": "[concat('webSite', uniqueString(resourceGroup().id))]"
+    "webSiteName": "[concat('webSite', uniqueString(resourceGroup().id))]",
+    "dbmsName": "[concat('dbms', uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
@@ -71,7 +105,24 @@
       "properties": {
         "name": "[variables('webSiteName')]",
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
-      }
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('webSiteName'))]"
+          ],
+          "tags": {
+            "displayName": "config"
+          },
+          "properties": {
+            "EnvName": "VS-ARM",
+            "FavoriteColor": "[parameters('color')]"
+          }
+        }
+      ]
     },
     {
       "apiVersion": "2014-04-01",
@@ -154,6 +205,53 @@
       "properties": {
         "applicationId": "[variables('webSiteName')]"
       }
+    },
+    {
+      "name": "[variables('dbmsName')]",
+      "type": "Microsoft.Sql/servers",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2014-04-01-preview",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "dbms"
+      },
+      "properties": {
+        "administratorLogin": "[parameters('dbmsAdminLogin')]",
+        "administratorLoginPassword": "[parameters('dbmsAdminLoginPassword')]"
+      },
+      "resources": [
+        {
+          "name": "AllowAllWindowsAzureIps",
+          "type": "firewallrules",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('dbmsName'))]"
+          ],
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "0.0.0.0"
+          }
+        },
+        {
+          "name": "[parameters('demodbName')]",
+          "type": "databases",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('dbmsName'))]"
+          ],
+          "tags": {
+            "displayName": "demodb"
+          },
+          "properties": {
+            "collation": "[parameters('demodbCollation')]",
+            "edition": "[parameters('demodbEdition')]",
+            "maxSizeBytes": "1073741824",
+            "requestedServiceObjectiveName": "[parameters('demodbRequestedServiceObjectiveName')]"
+          }
+        }
+      ]
     }
   ]
 }

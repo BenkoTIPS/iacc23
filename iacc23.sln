@@ -5,23 +5,32 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "code", "code", "{3146CEAE-B00D-4726-88F8-70499F33284F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iaccWeb", "code\iaccWeb\iaccWeb.csproj", "{AA468C21-7CB7-440E-8BE4-BBEC6EDBB10A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iaccWeb", "code\iaccWeb\iaccWeb.csproj", "{AA468C21-7CB7-440E-8BE4-BBEC6EDBB10A}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "VS", "Infra\VS\VS.deployproj", "{8ECB8065-C8B1-42F8-B48A-DFD33FAA9703}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AA468C21-7CB7-440E-8BE4-BBEC6EDBB10A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA468C21-7CB7-440E-8BE4-BBEC6EDBB10A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA468C21-7CB7-440E-8BE4-BBEC6EDBB10A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA468C21-7CB7-440E-8BE4-BBEC6EDBB10A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ECB8065-C8B1-42F8-B48A-DFD33FAA9703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ECB8065-C8B1-42F8-B48A-DFD33FAA9703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ECB8065-C8B1-42F8-B48A-DFD33FAA9703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ECB8065-C8B1-42F8-B48A-DFD33FAA9703}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AA468C21-7CB7-440E-8BE4-BBEC6EDBB10A} = {3146CEAE-B00D-4726-88F8-70499F33284F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8451A8F1-7E40-46BE-980F-578F3159FDAA}
 	EndGlobalSection
 EndGlobal
